@@ -1,10 +1,8 @@
 # Transferring log files after ETL using pig 
-# Database and logfiles essentially have same data from tests but the log files have detailed information for each drive. 
 # The log files are named with a standard convention and the information the name contains is not inside the file. Following code inserts the name of the file as a column.
 ls *.csv|xargs -I% sed -i 's/$/,%/' %
 # To be applied to a folder
 # ETL process
-
 A = LOAD 'logs_raw/2016' using PigStorage(',') AS (Timestamp:chararray,PCI:int,CellId:long,Latitude:float,Longitude:float,RSRP:float,SINR:float,RSRQ:chararray,PSC:int,RSCP:float,Eclo:float,Throughput:float,Temperature:chararray,waste1:int,waste2:int,waste3:int,name:chararray); 
 # loading the files(could be from local or hdfs)
 B = FOREACH A GENERATE REPLACE(Timestamp,' ',',') AS mytime_1,PCI,CellId,Latitude,Longitude,RSRP,SINR,RSRQ,PSC,RSCP,Eclo,Throughput,Temperature,REPLACE(name,'.csv','') as name_new;
